@@ -24,17 +24,39 @@ public class MappingSegmentTest {
         // arrange
         String sentence = "~!@#美國和中國家庭的總收入比較#@!~";
 
-        Token unknown1 = new Token().word("~!@#").type(Unknown);
-        Token us =       new Token().word("美國").type(DVFilter);
-        Token and =      new Token().word("和").type(Conjunction);
-        Token china =    new Token().word("中國").type(DVFilter);
-        Token country =  new Token().word("國家").type(DataColumn);
-        Token yard =     new Token().word("庭").type(Unknown);
-        Token is =       new Token().word("的").type(Conjunction);
-        Token total =    new Token().word("總").type(Count);
-        Token income =   new Token().word("收入").type(DataColumn);
-        Token compare =  new Token().word("比較").type(Comparison);
-        Token unknown2 = new Token().word("#@!~").type(Unknown);
+        Token unknown1 = new Token();
+        unknown1.setWord("~!@#");
+        unknown1.setType(Unknown);
+        Token us =       new Token();
+        us.setWord("美國");
+        us.setType(DVFilter);
+        Token and =      new Token();
+        and.setWord("和");
+        and.setType(Conjunction);
+        Token china =    new Token();
+        china.setWord("中國");
+        china.setType(DVFilter);
+        Token country =  new Token();
+        country.setWord("國家");
+        country.setType(DataColumn);
+        Token yard =     new Token();
+        yard.setWord("庭");
+        yard.setType(Unknown);
+        Token is =       new Token();
+        is.setWord("的");
+        is.setType(Conjunction);
+        Token total =    new Token();
+        total.setWord("總");
+        total.setType(Count);
+        Token income =   new Token();
+        income.setWord("收入");
+        income.setType(DataColumn);
+        Token compare =  new Token();
+        compare.setWord("比較");
+        compare.setType(Comparison);
+        Token unknown2 = new Token();
+        unknown2.setWord("#@!~");
+        unknown2.setType(Unknown);
         List<Token> expected = Arrays.asList(
                 unknown1, us, and, china, country, yard, is, total, income, compare, unknown2);
 

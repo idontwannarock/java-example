@@ -34,11 +34,15 @@ public class MappingSegment {
                 if (mappings.containsKey(substring)) {
                     if (unknownIndex < startIndex) {
                         String unknown = sentence.substring(unknownIndex, startIndex);
-                        Token dtoEntity = new Token().word(unknown).type(Unknown);
+                        Token dtoEntity = new Token();
+                        dtoEntity.setWord(unknown);
+                        dtoEntity.setType(Unknown);
                         dtoEntities.add(dtoEntity);
                     }
                     for (SymbolType tokenType : mappings.get(substring)) {
-                        Token dtoEntity = new Token().word(substring).type(tokenType);
+                        Token dtoEntity = new Token();
+                        dtoEntity.setWord(substring);
+                        dtoEntity.setType(tokenType);
                         dtoEntities.add(dtoEntity);
                     }
                     unknownIndex = startIndex + offset;
@@ -50,7 +54,9 @@ public class MappingSegment {
         }
         if (unknownIndex + offset < sentence.length()) {
             String unknown = sentence.substring(unknownIndex);
-            Token dtoEntity = new Token().word(unknown).type(Unknown);
+            Token dtoEntity = new Token();
+            dtoEntity.setWord(unknown);
+            dtoEntity.setType(Unknown);
             dtoEntities.add(dtoEntity);
         }
         return dtoEntities;
