@@ -17,6 +17,7 @@
 - slf4j-log4j12 1.7.29
 - xmlbeans 2.3.0
 - jackson-core 2.10.0
+- Apache commons-lang3 3.10
 
 # Required Properties
 
@@ -31,6 +32,6 @@ log4j.category.com.monitorjbl=DEBUG
 
 # QA
 
-1. ide does not recognize source and test path
+1. why ide does not recognize source and test classpath
 
-a: mark src.main as sources root, test.main as sources root
+a: mark src/main as sources root, test/main as test sources root
