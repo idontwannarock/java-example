@@ -5,27 +5,26 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class LargeCSVGenerator {
+public class LargeCsvGenerator {
 
-    public static void main(String[] arg) throws IOException {
-        FileWriter csvWriter = new FileWriter("file/big.csv");
-        BufferedReader csvReader = new BufferedReader(new FileReader("file/supermarket_sales.csv"));
-        String row = null;
+    public void generate(String fromFilePath, String toFilePath, long linesPerRow) throws IOException {
+        BufferedReader csvReader = new BufferedReader(new FileReader(fromFilePath));
+        FileWriter csvWriter = new FileWriter(toFilePath);
+        String row;
         int i = 0;
         while ((row = csvReader.readLine()) != null) {
-            System.out.println(i);
-            if(i == 0) {
+            if (i == 0) {
                 csvWriter.append(row);
                 csvWriter.append("\n");
             } else {
-                for(int j = 0; j < 10000; j ++) {
+                for(int j = 0; j < linesPerRow; j ++) {
                     csvWriter.append(row);
                     csvWriter.append("\n");
+                    csvWriter.flush();
                 }
             }
             i = i + 1;
         }
-        csvWriter.flush();
         csvWriter.close();
         csvReader.close();
     }
