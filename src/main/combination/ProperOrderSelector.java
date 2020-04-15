@@ -1,4 +1,4 @@
-package main.combination;
+package combination;
 
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 

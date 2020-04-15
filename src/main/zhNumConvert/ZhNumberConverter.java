@@ -1,4 +1,4 @@
-package main.zhNumConvert;
+package zhNumConvert;
 
 import java.util.*;
 

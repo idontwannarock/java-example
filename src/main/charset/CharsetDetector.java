@@ -1,4 +1,4 @@
-package main.charset;
+package charset;
 
 import java.io.BufferedReader;
 import java.io.IOException;

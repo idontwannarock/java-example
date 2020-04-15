@@ -1,4 +1,4 @@
-package main.regex;
+package regex;
 
 public class PunctuationRegex {
 

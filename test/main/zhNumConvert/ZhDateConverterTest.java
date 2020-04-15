@@ -1,4 +1,4 @@
-package main.zhNumConvert;
+package zhNumConvert;
 
 import org.junit.Before;
 import org.junit.Test;

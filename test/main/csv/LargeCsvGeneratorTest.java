@@ -1,6 +1,5 @@
-package main.file;
+package csv;
 
-import main.csv.LargeCsvGenerator;
 import org.junit.Before;
 import org.junit.Test;
 

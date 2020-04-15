@@ -1,4 +1,4 @@
-package main.encryption;
+package encryption;
 
 import org.apache.commons.net.util.Base64;
 

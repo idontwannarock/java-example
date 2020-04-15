@@ -1,4 +1,4 @@
-package main.combination;
+package combination;
 
 import lombok.Builder;
 import lombok.Data;

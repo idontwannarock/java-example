@@ -1,4 +1,4 @@
-package main.charset;
+package charset;
 
 import org.junit.Before;
 import org.junit.Test;

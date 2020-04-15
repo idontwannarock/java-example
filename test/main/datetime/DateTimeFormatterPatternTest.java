@@ -1,4 +1,4 @@
-package main.datetime;
+package datetime;
 
 import org.junit.Before;
 import org.junit.Test;

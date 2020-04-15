@@ -1,4 +1,4 @@
-package main.segment;
+package segment;
 
 import org.junit.Before;
 import org.junit.Test;

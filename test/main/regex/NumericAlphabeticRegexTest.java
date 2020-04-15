@@ -1,4 +1,4 @@
-package main.regex;
+package regex;
 
 import org.junit.Before;
 import org.junit.Test;

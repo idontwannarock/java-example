@@ -1,4 +1,4 @@
-package main.character;
+package character;
 
 public class CharacterInspector {
 

@@ -1,4 +1,4 @@
-package main.datetime;
+package datetime;
 
 public interface DateValidator {
 

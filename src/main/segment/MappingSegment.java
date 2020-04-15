@@ -1,11 +1,11 @@
-package main.segment;
+package segment;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
-import static main.segment.SymbolType.Unknown;
+import static segment.SymbolType.Unknown;
 
 public class MappingSegment {
 

@@ -1,4 +1,4 @@
-package main.character;
+package character;
 
 import org.junit.Before;
 import org.junit.Test;

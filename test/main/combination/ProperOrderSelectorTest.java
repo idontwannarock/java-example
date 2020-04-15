@@ -1,4 +1,4 @@
-package main.combination;
+package combination;
 
 import org.junit.Before;
 import org.junit.Test;
