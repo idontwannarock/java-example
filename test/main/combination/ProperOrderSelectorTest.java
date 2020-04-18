@@ -1,8 +1,8 @@
 package combination;
 
+import org.apache.commons.lang3.NotImplementedException;
 import org.junit.Before;
 import org.junit.Test;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.Arrays;
 import java.util.List;

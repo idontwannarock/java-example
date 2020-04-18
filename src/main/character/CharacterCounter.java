@@ -1,6 +1,6 @@
 package character;
 
-public class CharacterInspector {
+public class CharacterCounter {
 
     public int count(String word) {
         int count = 0;

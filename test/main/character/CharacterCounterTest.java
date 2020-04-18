@@ -5,13 +5,13 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-public class CharacterInspectorTest {
+public class CharacterCounterTest {
 
-    private CharacterInspector characterInspector;
+    private CharacterCounter characterCounter;
 
     @Before
     public void init() {
-        this.characterInspector = new CharacterInspector();
+        this.characterCounter = new CharacterCounter();
     }
 
     @Test
@@ -21,7 +21,7 @@ public class CharacterInspectorTest {
         int expected = 4;
 
         // action
-        int actual = characterInspector.count(input);
+        int actual = characterCounter.count(input);
 
         // assert
         assertEquals(expected, actual);
@@ -34,7 +34,7 @@ public class CharacterInspectorTest {
         int expected = 4;
 
         // action
-        int actual = characterInspector.count(input);
+        int actual = characterCounter.count(input);
 
         // assert
         assertEquals(expected, actual);
