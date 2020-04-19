@@ -17,7 +17,7 @@ public class XlsParserTest {
     private XlsParser xlsParser;
 
     private final Gson gson = new GsonBuilder().serializeNulls().create();
-    private final TypeToken<List<List<String>>> typeToken = new TypeToken<List<List<String>>>() {};
+    private final TypeToken<List<List<String>>> typeToken = new TypeToken<>() {};
 
     @Before
     public void init() {
@@ -27,13 +27,6 @@ public class XlsParserTest {
     @Test
     public void test() {
         // arrange
-        List<String> header = new ArrayList<>();
-        header.add("c0");
-        header.add("c1");
-        header.add("c2");
-        header.add("c3");
-        header.add("c4");
-        header.add("c5");
         List<String> row = new ArrayList<>();
         row.add(null);
         row.add("null");
@@ -42,7 +35,6 @@ public class XlsParserTest {
         row.add("2020-03-01 12:00:00.000");
         row.add("2020-03-01 12:00:00.000");
         List<List<String>> rows = new ArrayList<>();
-//        rows.add(header);
         rows.add(row);
         String expectedJson = gson.toJson(rows);
         System.out.println("Expected json: " + expectedJson);

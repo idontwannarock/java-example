@@ -27,12 +27,17 @@ public class CsvParserTest {
     @Test
     public void test() {
         // arrange
-        List<String> row = new ArrayList<>();
-        row.add(null);
-        row.add("null");
-        row.add("2020");
+        List<String> firstRow = new ArrayList<>();
+        firstRow.add("");
+        firstRow.add("null");
+        firstRow.add("2020");
+        List<String> secondRow = new ArrayList<>();
+        secondRow.add("");
+        secondRow.add("null");
+        secondRow.add(" ");
         List<List<String>> rows = new ArrayList<>();
-        rows.add(row);
+        rows.add(firstRow);
+        rows.add(secondRow);
         String expectedJson = gson.toJson(rows);
         System.out.println("Expected json: " + expectedJson);
         List<List<String>> expected = gson.fromJson(expectedJson, typeToken.getType());

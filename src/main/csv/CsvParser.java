@@ -7,6 +7,7 @@ import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class CsvParser {
@@ -22,14 +23,8 @@ public class CsvParser {
                     rowIndex++;
                     continue;
                 }
-                List<String> row = new ArrayList<>();
-                for (int index = 0; index < cellTotal; index++) {
-                    String recordValue = currentRecord[index];
-                    if ("".equals(recordValue)) {
-                        recordValue = null;
-                    }
-                    row.add(recordValue);
-                }
+                List<String> row = new ArrayList<>(
+                        Arrays.asList(currentRecord).subList(0, Math.toIntExact(cellTotal)));
                 rows.add(row);
                 rowIndex++;
             }
