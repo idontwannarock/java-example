@@ -2,7 +2,9 @@ package charset;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -28,11 +30,26 @@ public class CharsetDetector {
                 System.out.println(k + " failed on line " + line);
             }
             if (success) {
-                System.out.println("*************************  Successs " + k);
+                System.out.println("*************************  Success " + k);
                 viableCharsets.add(k);
             }
         }
 
         return viableCharsets;
+    }
+
+    public String convert(String value, String fromEncoding, String toEncoding) throws UnsupportedEncodingException {
+        return new String(value.getBytes(fromEncoding), toEncoding);
+    }
+
+    public String charset(String value, String[] charsets) throws UnsupportedEncodingException {
+        String probe = StandardCharsets.UTF_8.name();
+        for(String c : charsets) {
+            Charset charset = Charset.forName(c);
+            if (value.equals(convert(convert(value, charset.name(), probe), probe, charset.name()))) {
+                return c;
+            }
+        }
+        return StandardCharsets.UTF_8.name();
     }
 }

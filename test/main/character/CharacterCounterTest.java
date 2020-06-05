@@ -17,8 +17,8 @@ public class CharacterCounterTest {
     @Test
     public void testWordFromDb() {
         // arrange
-        String input = "七贤分行";
-        int expected = 4;
+        String input = "$";
+        int expected = 1;
 
         // action
         int actual = characterCounter.count(input);
