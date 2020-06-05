@@ -18,6 +18,8 @@
 - xmlbeans 2.3.0
 - jackson-core 2.10.0
 - Apache commons-lang3 3.10
+- mssql-jdbc 7.4.1.jre11
+- postgresql 42.2.8
 
 # Required Properties
 

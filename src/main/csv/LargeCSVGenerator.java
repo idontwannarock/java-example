@@ -7,7 +7,7 @@ import java.io.IOException;
 
 public class LargeCsvGenerator {
 
-    public void generate(String fromFilePath, String toFilePath, long linesPerRow) throws IOException {
+    public void generate(String fromFilePath, String toFilePath, long copyLinesPerRow) throws IOException {
         BufferedReader csvReader = new BufferedReader(new FileReader(fromFilePath));
         FileWriter csvWriter = new FileWriter(toFilePath);
         String row;
@@ -17,7 +17,7 @@ public class LargeCsvGenerator {
                 csvWriter.append(row);
                 csvWriter.append("\n");
             } else {
-                for(int j = 0; j < linesPerRow; j ++) {
+                for(int j = 0; j < copyLinesPerRow; j ++) {
                     csvWriter.append(row);
                     csvWriter.append("\n");
                     csvWriter.flush();

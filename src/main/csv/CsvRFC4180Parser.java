@@ -1,20 +1,26 @@
 package csv;
 
 import com.opencsv.CSVReader;
+import com.opencsv.CSVReaderBuilder;
+import com.opencsv.RFC4180Parser;
 
 import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
+import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CsvParser {
+import static java.nio.file.Files.newBufferedReader;
+
+public class CsvRFC4180Parser {
 
     public List<List<String>> parse(String csvFilePath, long skipLines, long cellTotal) {
         List<List<String>> rows = new ArrayList<>();
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(csvFilePath), StandardCharsets.UTF_8));
-             CSVReader csvReader = new CSVReader(reader)) {
+
+        try (BufferedReader reader = newBufferedReader(Paths.get(csvFilePath));
+             CSVReader csvReader = new CSVReaderBuilder(reader)
+                     .withCSVParser(new RFC4180Parser())
+                     .build()) {
             String[] currentRecord;
             int rowIndex = 0;
             while ((currentRecord = csvReader.readNext()) != null) {
@@ -31,9 +37,10 @@ public class CsvParser {
                 rows.add(row);
                 rowIndex++;
             }
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
+
         return rows;
     }
 }

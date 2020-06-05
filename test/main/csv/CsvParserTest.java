@@ -17,7 +17,7 @@ public class CsvParserTest {
     private CsvParser csvParser;
 
     private final Gson gson = new GsonBuilder().serializeNulls().create();
-    private final TypeToken<List<List<String>>> typeToken = new TypeToken<List<List<String>>>() {};
+    private final TypeToken<List<List<String>>> typeToken = new TypeToken<>() {};
 
     @Before
     public void init() {
