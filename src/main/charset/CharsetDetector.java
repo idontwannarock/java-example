@@ -52,4 +52,19 @@ public class CharsetDetector {
         }
         return StandardCharsets.UTF_8.name();
     }
+
+    public void decodeHexString(String orig) {
+        try {
+            byte[] bytes = new byte[orig.length() / 4];
+
+            for (int i = 0; i < orig.length(); i += 4) {
+                bytes[i / 4] = (byte) Integer.parseInt(orig.substring(i + 2, i + 4), 16);
+            }
+
+            System.out.println(new String(bytes, StandardCharsets.UTF_8));
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
