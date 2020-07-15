@@ -38,16 +38,7 @@ public class DateTimeFormatterPattern {
     }
 
     public String formatDate(Date date, String pattern) {
-        DateTimeFormatter formatter = new DateTimeFormatterBuilder()
-                .appendPattern(pattern)
-                .parseDefaulting(ChronoField.MONTH_OF_YEAR, 1)
-                .parseDefaulting(ChronoField.DAY_OF_MONTH, 1)
-                .parseDefaulting(ChronoField.HOUR_OF_DAY, 0)
-                .parseDefaulting(ChronoField.MINUTE_OF_HOUR, 0)
-                .parseDefaulting(ChronoField.SECOND_OF_MINUTE, 0)
-                .parseDefaulting(ChronoField.MILLI_OF_SECOND, 0)
-                .toFormatter()
-                .withResolverStyle(ResolverStyle.STRICT);
+        DateTimeFormatter formatter = new DateTimeFormatterBuilder().appendPattern(pattern).toFormatter();
 
         String result = null;
         try {

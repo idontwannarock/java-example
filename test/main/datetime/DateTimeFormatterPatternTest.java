@@ -49,4 +49,38 @@ public class DateTimeFormatterPatternTest {
         System.out.println("Actual parsed date: " + actual);
         assertEquals(expected, actual);
     }
+
+    @Test
+    public void testQuarterFormat() {
+        // arrange
+        String parsePattern = "uuuu-MM-dd";
+        String input = "2019-04-23";
+        String formatPattern = "uuuu-'Q'q";
+        String expected = "2019-Q2";
+
+        // act
+        Date date = dateTimeFormatterPattern.parseString(input, parsePattern);
+        String actual = dateTimeFormatterPattern.formatDate(date, formatPattern);
+
+        // assert
+        System.out.println("Actual parsed date: " + actual);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testWeekFormat() {
+        // arrange
+        String parsePattern = "uuuu-MM-dd HH:mm:ss.SSS";
+        String input = "2019-12-23 12:00:00.000";
+        String formatPattern = "uuuu-'W'w";
+        String expected = "2019-W52";
+
+        // act
+        Date date = dateTimeFormatterPattern.parseString(input, parsePattern);
+        String actual = dateTimeFormatterPattern.formatDate(date, formatPattern);
+
+        // assert
+        System.out.println("Actual parsed date: " + actual);
+        assertEquals(expected, actual);
+    }
 }
