@@ -39,4 +39,17 @@ public class CharacterCounterTest {
         // assert
         assertEquals(expected, actual);
     }
+
+    @Test
+    public void testInvisibleWord() {
+        // arrange
+        String input = "\b";
+        int expected = 1;
+
+        // act
+        int actual = characterCounter.count(input);
+
+        // assert
+        assertEquals(expected, actual);
+    }
 }

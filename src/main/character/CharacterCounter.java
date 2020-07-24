@@ -7,7 +7,7 @@ public class CharacterCounter {
         for (char c : word.toCharArray()) {
             count++;
             int code = c;
-            System.out.println(c + " unicode: " + code);
+            System.out.println(c + " code point: " + code);
         }
         return count;
     }
