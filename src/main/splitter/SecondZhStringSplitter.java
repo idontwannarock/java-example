@@ -5,7 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.*;
 
-public class ZhStringSplitter {
+public class SecondZhStringSplitter {
 
     /**
      * Used by TreeSet to maintain the order and it's equality and to avoid adding the same item more than once
@@ -17,8 +17,7 @@ public class ZhStringSplitter {
             if ( o2 == null ) return -1;
             if ( o1.length < o2.length ) {
                 return +1;
-            }
-            if ( o1.length > o2.length ) {
+            } if ( o1.length > o2.length ) {
                 return -1;
             } else {
                 for ( int i = 0 ; i < o1.length ; i++ ) {
@@ -74,7 +73,7 @@ public class ZhStringSplitter {
      * @param cacheMap for performance boosting that if a substring has been completed once, it will not attempt to perform recursive again
      * @return all possible combination of a question split (a.k.a combinations of tokens)
      */
-    public static TreeSet<String[]> splitNoSpace(String question, int depth, HashMap<String, TreeSet<String[]>> cacheMap) {
+    public static TreeSet<String[]> splitNoSpace(String question, int depth, HashMap<String,TreeSet<String[]>> cacheMap) {
         //if this question was done already, return
         if ( cacheMap.containsKey(question) ) {
             return cacheMap.get(question);
@@ -129,9 +128,11 @@ public class ZhStringSplitter {
      * the recursive method, which creates all combinations of tokens of a String.
      *
      * @param question A question String
+     * @param addSpaceCombinedTokens Determine whether space split tokens should be combined as a combination in the result.
+     *                                 (e.g. "unit cost" -> {["unit","cost"],["unit cost"]})
      * @return all combinations of tokens
      */
-    public static TreeSet<String[]> split(String question) {
+    public static TreeSet<String[]> split(String question, boolean addSpaceCombinedTokens) {
         if ( StringUtils.isBlank(question) ) return new TreeSet<String[]>();
 
         String[] tokens = question.trim().split(" ");
@@ -161,6 +162,14 @@ public class ZhStringSplitter {
                 for ( String[] first : firstTreeSet ) {
                     for ( String[] other : nextTreeSet ) {
                         result.add(ArrayUtils.addAll(first, other));
+
+                        if ( addSpaceCombinedTokens ) {
+                            //concatenate the last String of first, space, and the first String of the second
+                            //And form a new combination of tokens
+                            String[] newOther = Arrays.copyOf(other, other.length);
+                            newOther[0] = first[first.length-1] + " " + newOther[0];
+                            result.add(ArrayUtils.addAll(Arrays.copyOfRange(first, 0, first.length-1), newOther));
+                        }
                     }
                 }
             }
@@ -177,19 +186,16 @@ public class ZhStringSplitter {
     public static void main(String[] args) {
         System.out.println("Test starts");
 
-        String[] testStringArray = new String[] {
-//                "今天我們二十八年過後的水果是不是好的","1998","abc","1998abc","1998 1994 abc 1997 cde 1003"
-//                ,"一二三四五","一二三四五六七八九十","一二三四五六七八九十一二三四五","一二三四五六七八九十一二三四五六七八九十"
-//                ,"一二三四五六七八九十 一二三四五六七八九十","一二三四五 六七八九十 一二三四五 六七八九十"
-//                ,"2019年SlQG-35256012的概況","1998一二三 mno 1997 三 abc1994xyz四五"
-                "Customer Age 大於10的Revenue"
-        };
+        String[] testStringArray = new String[] {"今天我們二十八年過後的水果是不是好的","1998","abc","1998abc","1998 1994 abc 1997 cde 1003"
+                ,"一二三四五","一二三四五六七八九十","一二三四五六七八九十一二三四五","一二三四五六七八九十一二三四五六七八九十"
+                ,"一二三四五六七八九十 一二三四五六七八九十","一二三四五 六七八九十 一二三四五 六七八九十", "2019年SlQG-35256012的概況","1998一二三 mno 1997 三 abc1994xyz四五"
+                ,"cost revenue unit cost trend 2019"};
 
         for ( String testString : testStringArray ) {
             System.out.println("\n\n\nTest for '" + testString + "'; length = " + testString.length());
             long currentTime = System.currentTimeMillis();
 
-            TreeSet<String[]> resultList = split(testString);
+            TreeSet<String[]> resultList = split(testString, true);
 
             long finalTime = System.currentTimeMillis() - currentTime;
 
