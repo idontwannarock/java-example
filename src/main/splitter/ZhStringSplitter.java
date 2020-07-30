@@ -10,15 +10,16 @@ public class ZhStringSplitter {
     /**
      * Used by TreeSet to maintain the order and it's equality and to avoid adding the same item more than once
      */
-    private static final Comparator<String[]> STRING_ARRAY_COMPARATOR = (o1, o2) -> {
+    public static final Comparator<String[]> STRING_ARRAY_COMPARATOR = (o1, o2) -> {
         if ( o1 == null ) return +1;
         if ( o2 == null ) return -1;
-        if ( o1.length < o2.length ) return +1;
-        if ( o1.length > o2.length ) {
+        if ( o1.length < o2.length ) {
+            return +1;
+        } if ( o1.length > o2.length ) {
             return -1;
         } else {
             for ( int i = 0 ; i < o1.length ; i++ ) {
-                if ( o1[i].length() != o2[i].length() ) {
+                if (o1[i].length() != o2[i].length()) {
                     if ( o1[i].length() < o2[i].length() ) {
                         return -1;
                     } else {
@@ -31,36 +32,32 @@ public class ZhStringSplitter {
     };
 
     /**
+     * Main Split method to be used by other programs. It first splits a question by a space, and put all substring into
+     * the recursive method, which creates all combinations of tokens of a String.
      *
-     * @param item a given string (substring of a question in this case)
-     * @param index an index where this method should use to start looking for a 'split index'
-     * @return It will attempt to find the longest split index while grouping all the integer together or all the English letter together.
+     * @param question A question String
+     * @param addSpaceCombinedTokens Determine whether space split tokens should be combined as a combination in the result.
+     *                                 (e.g. "unit cost" -> {["unit","cost"],["unit cost"]})
+     * @return all combinations of tokens
      */
-    private int findSplitIndex(String item,int index) {
-        if ( item.length() <= index ) return item.length()+1;
+    public TreeSet<String[]> split(String question, boolean addSpaceCombinedTokens) {
+        if ( StringUtils.isBlank(question) ) return new TreeSet<>(STRING_ARRAY_COMPARATOR);
 
-        //for the case where index is 0, it should return index+1;
-        if ( ! ((item.charAt(index) >= 'a' && item.charAt(index) <= 'z') || (item.charAt(index) >= 'A' && item.charAt(index) <= 'Z') || Character.isDigit(item.charAt(index)) ) ) {
-            return index+1;
+        String[] tokens = question.trim().split(" ");
 
-            //for English letter, once it finds the first one, it attempts to find all trailing English letter till it can't
-        } else if ( (item.charAt(index) >= 'a' && item.charAt(index) <= 'z') || (item.charAt(index) >= 'A' && item.charAt(index) <= 'Z') ) {
-            for ( int i = index ; i < item.length() ; i++ ) {
-                if ( ! ((item.charAt(i) >= 'a' && item.charAt(i) <= 'z') || (item.charAt(i) >= 'A' && item.charAt(i) <= 'Z') ) ) {
-                    return i;
-                }
-            }
+        //Generate the result of the first substring
+        TreeSet<String[]> firstTreeSet = splitNoSpace(tokens[0],0, new HashMap<>());
 
-            //for digit, once it finds the first one, it attempts to find all trailing digit till it can't
-        } else if ( Character.isDigit(item.charAt(index)) ) {
-            for ( int i = index ; i < item.length() ; i++ ) {
-                if ( ! Character.isDigit(item.charAt(i)) ) {
-                    return i;
-                }
-            }
+        if ( tokens.length < 2 ) return firstTreeSet;
+
+        //Generate all other results of the rest of substrings
+        List<TreeSet<String[]>> otherTreeSetList = new ArrayList<>();
+        otherTreeSetList.add(firstTreeSet);
+        for ( int i = 1 ; i < tokens.length ; i++ ) {
+            otherTreeSetList.add(splitNoSpace(tokens[i],0, new HashMap<>()));
         }
 
-        return item.length();
+        return join(otherTreeSetList, addSpaceCombinedTokens);
     }
 
     /**
@@ -97,7 +94,7 @@ public class ZhStringSplitter {
             String firstPart = question.substring(0,findSplitIndex);
 
             //recursively find all the possible combinations of tokens for the second half
-            TreeSet<String[]> secondPart = splitNoSpace(question.substring(findSplitIndex),depth+1,cacheMap);
+            TreeSet<String[]> secondPart = splitNoSpace(question.substring(findSplitIndex),depth+1, cacheMap);
             if ( secondPart.size() == 0 ) {
                 result.add(ArrayUtils.addAll(new String[] {firstPart}));
             } else {
@@ -120,40 +117,52 @@ public class ZhStringSplitter {
     }
 
     /**
-     * Main Split method to be used by other programs. It first splits a question by a space, and put all substring into
-     * the recursive method, which creates all combinations of tokens of a String.
-     *
-     * @param question A question String
-     * @param addSpaceCombinedTokens Determine whether space split tokens should be combined as a combination in the result.
-     *                                 (e.g. "unit cost" -> {["unit","cost"],["unit cost"]})
-     * @return all combinations of tokens
+     * @param item a given string (substring of a question in this case)
+     * @param index an index where this method should use to start looking for a 'split index'
+     * @return It will attempt to find the longest split index while grouping all the integer together or all the English letter together.
      */
-    public TreeSet<String[]> split(String question, boolean addSpaceCombinedTokens) {
-        if ( StringUtils.isBlank(question) ) return new TreeSet<>(STRING_ARRAY_COMPARATOR);
+    private int findSplitIndex(String item,int index) {
+        if ( item.length() <= index ) return item.length()+1;
 
-        String[] tokens = question.trim().split(" ");
+        //for the case where index is 0, it should return index+1;
+        if ( ! ((item.charAt(index) >= 'a' && item.charAt(index) <= 'z') || (item.charAt(index) >= 'A' && item.charAt(index) <= 'Z') || Character.isDigit(item.charAt(index)) ) ) {
+            return index+1;
 
-        //Generate the result of the first substring
-        TreeSet<String[]> firstTreeSet = splitNoSpace(tokens[0],0, new HashMap<>());
+            //for English letter, once it finds the first one, it attempts to find all trailing English letter till it can't
+        } else if ( (item.charAt(index) >= 'a' && item.charAt(index) <= 'z') || (item.charAt(index) >= 'A' && item.charAt(index) <= 'Z') ) {
+            for ( int i = index ; i < item.length() ; i++ ) {
+                if ( ! ((item.charAt(i) >= 'a' && item.charAt(i) <= 'z') || (item.charAt(i) >= 'A' && item.charAt(i) <= 'Z') ) ) {
+                    return i;
+                }
+            }
 
-        if ( tokens.length < 2 ) return firstTreeSet;
-
-        //Generate all other results of the rest of substrings
-        List<TreeSet<String[]>> otherTreeSetList = new ArrayList<>();
-        for ( int i = 1 ; i < tokens.length ; i++ ) {
-            otherTreeSetList.add(splitNoSpace(tokens[i],0, new HashMap<>()));
+            //for digit, once it finds the first one, it attempts to find all trailing digit till it can't
+        } else if ( Character.isDigit(item.charAt(index)) ) {
+            for ( int i = index ; i < item.length() ; i++ ) {
+                if ( ! Character.isDigit(item.charAt(i)) ) {
+                    return i;
+                }
+            }
         }
 
-        //Join the first and the rest of results together
-        for (TreeSet<String[]> strings : otherTreeSetList) {
+        return item.length();
+    }
+
+    public TreeSet<String[]> join(List<TreeSet<String[]>> treeSetList, boolean addSpaceCombinedTokens) {
+        if ( treeSetList == null || treeSetList.size() == 0 ) return new TreeSet<>(STRING_ARRAY_COMPARATOR);
+
+        TreeSet<String[]> finalTreeSet = new TreeSet<>(STRING_ARRAY_COMPARATOR);
+
+        //Join all the TreeSet together together
+        for (TreeSet<String[]> strings : treeSetList) {
             TreeSet<String[]> result = new TreeSet<>(STRING_ARRAY_COMPARATOR);
 
             if (strings.size() == 0) {
-                result = firstTreeSet;
-            } else if (firstTreeSet.size() == 0) {
+                result = finalTreeSet;
+            } else if (finalTreeSet.size() == 0) {
                 result = strings;
             } else {
-                for (String[] first : firstTreeSet) {
+                for (String[] first : finalTreeSet) {
                     for (String[] other : strings) {
                         result.add(ArrayUtils.addAll(first, other));
 
@@ -167,9 +176,9 @@ public class ZhStringSplitter {
                     }
                 }
             }
-            firstTreeSet = result;
+            finalTreeSet = result;
         }
 
-        return firstTreeSet;
+        return finalTreeSet;
     }
 }
