@@ -10,29 +10,24 @@ public class ZhStringSplitter {
     /**
      * Used by TreeSet to maintain the order and it's equality and to avoid adding the same item more than once
      */
-    private static Comparator<String[]> stringArrayComparator = new Comparator<String[]>() {
-        @Override
-        public int compare(String[] o1, String[] o2) {
-            if ( o1 == null ) return +1;
-            if ( o2 == null ) return -1;
-            if ( o1.length < o2.length ) {
-                return +1;
-            }
-            if ( o1.length > o2.length ) {
-                return -1;
-            } else {
-                for ( int i = 0 ; i < o1.length ; i++ ) {
-                    if ( o1[i].length() == o2[i].length() ) {
-                        continue;
-                    } else if ( o1[i].length() < o2[i].length() ) {
+    private static final Comparator<String[]> STRING_ARRAY_COMPARATOR = (o1, o2) -> {
+        if ( o1 == null ) return +1;
+        if ( o2 == null ) return -1;
+        if ( o1.length < o2.length ) return +1;
+        if ( o1.length > o2.length ) {
+            return -1;
+        } else {
+            for ( int i = 0 ; i < o1.length ; i++ ) {
+                if ( o1[i].length() != o2[i].length() ) {
+                    if ( o1[i].length() < o2[i].length() ) {
                         return -1;
                     } else {
                         return +1;
                     }
                 }
             }
-            return 0;
         }
+        return 0;
     };
 
     /**
@@ -41,7 +36,7 @@ public class ZhStringSplitter {
      * @param index an index where this method should use to start looking for a 'split index'
      * @return It will attempt to find the longest split index while grouping all the integer together or all the English letter together.
      */
-    public static int findSplitIndex(String item,int index) {
+    private int findSplitIndex(String item,int index) {
         if ( item.length() <= index ) return item.length()+1;
 
         //for the case where index is 0, it should return index+1;
@@ -74,14 +69,14 @@ public class ZhStringSplitter {
      * @param cacheMap for performance boosting that if a substring has been completed once, it will not attempt to perform recursive again
      * @return all possible combination of a question split (a.k.a combinations of tokens)
      */
-    public static TreeSet<String[]> splitNoSpace(String question, int depth, HashMap<String, TreeSet<String[]>> cacheMap) {
+    private TreeSet<String[]> splitNoSpace(String question, int depth, HashMap<String, TreeSet<String[]>> cacheMap) {
         //if this question was done already, return
         if ( cacheMap.containsKey(question) ) {
             return cacheMap.get(question);
         }
 
         //Use TreeSet to avoid recording the same combination of tokens
-        TreeSet<String[]> result = new TreeSet<String[]>(stringArrayComparator);
+        TreeSet<String[]> result = new TreeSet<>(STRING_ARRAY_COMPARATOR);
 
         if ( question == null || question.length() == 0 ) {
             return result;
@@ -102,7 +97,7 @@ public class ZhStringSplitter {
             String firstPart = question.substring(0,findSplitIndex);
 
             //recursively find all the possible combinations of tokens for the second half
-            TreeSet<String[]> secondPart = splitNoSpace(question.substring(findSplitIndex,question.length()),depth+1,cacheMap);
+            TreeSet<String[]> secondPart = splitNoSpace(question.substring(findSplitIndex),depth+1,cacheMap);
             if ( secondPart.size() == 0 ) {
                 result.add(ArrayUtils.addAll(new String[] {firstPart}));
             } else {
@@ -129,38 +124,46 @@ public class ZhStringSplitter {
      * the recursive method, which creates all combinations of tokens of a String.
      *
      * @param question A question String
+     * @param addSpaceCombinedTokens Determine whether space split tokens should be combined as a combination in the result.
+     *                                 (e.g. "unit cost" -> {["unit","cost"],["unit cost"]})
      * @return all combinations of tokens
      */
-    public static TreeSet<String[]> split(String question) {
-        if ( StringUtils.isBlank(question) ) return new TreeSet<String[]>();
+    public TreeSet<String[]> split(String question, boolean addSpaceCombinedTokens) {
+        if ( StringUtils.isBlank(question) ) return new TreeSet<>(STRING_ARRAY_COMPARATOR);
 
         String[] tokens = question.trim().split(" ");
 
         //Generate the result of the first substring
-        TreeSet<String[]> firstTreeSet = splitNoSpace(tokens[0],0,new HashMap<String,TreeSet<String[]>>());
+        TreeSet<String[]> firstTreeSet = splitNoSpace(tokens[0],0, new HashMap<>());
 
         if ( tokens.length < 2 ) return firstTreeSet;
 
         //Generate all other results of the rest of substrings
-        List<TreeSet<String[]>> otherTreeSetList = new ArrayList<TreeSet<String[]>>();
+        List<TreeSet<String[]>> otherTreeSetList = new ArrayList<>();
         for ( int i = 1 ; i < tokens.length ; i++ ) {
-            otherTreeSetList.add(splitNoSpace(tokens[i],0,new HashMap<String,TreeSet<String[]>>()));
+            otherTreeSetList.add(splitNoSpace(tokens[i],0, new HashMap<>()));
         }
 
         //Join the first and the rest of results together
-        Iterator<TreeSet<String[]>> iter = otherTreeSetList.iterator();
-        while (iter.hasNext()) {
-            TreeSet<String[]> result = new TreeSet<String[]>(stringArrayComparator);
-            TreeSet<String[]> nextTreeSet = iter.next();
+        for (TreeSet<String[]> strings : otherTreeSetList) {
+            TreeSet<String[]> result = new TreeSet<>(STRING_ARRAY_COMPARATOR);
 
-            if ( nextTreeSet.size() == 0 ) {
+            if (strings.size() == 0) {
                 result = firstTreeSet;
-            } else if ( firstTreeSet.size() == 0 ) {
-                result = nextTreeSet;
+            } else if (firstTreeSet.size() == 0) {
+                result = strings;
             } else {
-                for ( String[] first : firstTreeSet ) {
-                    for ( String[] other : nextTreeSet ) {
+                for (String[] first : firstTreeSet) {
+                    for (String[] other : strings) {
                         result.add(ArrayUtils.addAll(first, other));
+
+                        if (addSpaceCombinedTokens) {
+                            //concatenate the last String of first, space, and the first String of the second
+                            //And form a new combination of tokens
+                            String[] newOther = Arrays.copyOf(other, other.length);
+                            newOther[0] = first[first.length - 1] + " " + newOther[0];
+                            result.add(ArrayUtils.addAll(Arrays.copyOfRange(first, 0, first.length - 1), newOther));
+                        }
                     }
                 }
             }
@@ -168,39 +171,5 @@ public class ZhStringSplitter {
         }
 
         return firstTreeSet;
-    }
-
-    /**
-     * When the string length is greater than 20 character long, it will take 1 second to fully split.
-     * When there is space, the token between the space will be treated as "one unit" to be split.
-     */
-    public static void main(String[] args) {
-        System.out.println("Test starts");
-
-        String[] testStringArray = new String[] {
-//                "今天我們二十八年過後的水果是不是好的","1998","abc","1998abc","1998 1994 abc 1997 cde 1003"
-//                ,"一二三四五","一二三四五六七八九十","一二三四五六七八九十一二三四五","一二三四五六七八九十一二三四五六七八九十"
-//                ,"一二三四五六七八九十 一二三四五六七八九十","一二三四五 六七八九十 一二三四五 六七八九十"
-//                ,"2019年SlQG-35256012的概況","1998一二三 mno 1997 三 abc1994xyz四五"
-                "Customer Age 大於10的Revenue"
-        };
-
-        for ( String testString : testStringArray ) {
-            System.out.println("\n\n\nTest for '" + testString + "'; length = " + testString.length());
-            long currentTime = System.currentTimeMillis();
-
-            TreeSet<String[]> resultList = split(testString);
-
-            long finalTime = System.currentTimeMillis() - currentTime;
-
-            for ( String[] result : resultList ) {
-                System.out.println(Arrays.toString(result));
-            }
-
-            System.out.println("Total splits: " + resultList.size());
-            System.out.println("Total time taken: " + finalTime);
-        }
-
-        System.out.println("Test ends");
     }
 }
