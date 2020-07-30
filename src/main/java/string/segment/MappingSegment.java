@@ -1,15 +1,15 @@
-package segment;
+package string.segment;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
-import static segment.SymbolType.Unknown;
+import static string.segment.SymbolType.Unknown;
 
 public class MappingSegment {
 
-    private HashMap<String, List<SymbolType>> mappings = new HashMap<>();
+    private final HashMap<String, List<SymbolType>> mappings = new HashMap<>();
     private int maxLength = 0;
 
     public void addTokenList(List<String> words, SymbolType type) {

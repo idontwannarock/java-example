@@ -1,4 +1,4 @@
-package segment;
+package string.segment;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

@@ -1,4 +1,4 @@
-package segment;
+package string.segment;
 
 public enum SymbolType {
     Base,

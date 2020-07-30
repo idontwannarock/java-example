@@ -1,4 +1,4 @@
-package regex;
+package string.regex;
 
 import java.util.ArrayList;
 import java.util.LinkedHashSet;

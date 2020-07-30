@@ -1,12 +1,14 @@
-package segment;
+package string.segment;
 
 import org.junit.Before;
 import org.junit.Test;
+import string.segment.MappingSegment;
+import string.segment.Token;
 
 import java.util.Arrays;
 import java.util.List;
 
-import static segment.SymbolType.*;
+import static string.segment.SymbolType.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 

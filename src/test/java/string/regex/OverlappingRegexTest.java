@@ -1,6 +1,7 @@
-package regex;
+package string.regex;
 
 import org.junit.Test;
+import string.regex.OverlappingRegex;
 
 import java.util.Arrays;
 import java.util.LinkedHashSet;

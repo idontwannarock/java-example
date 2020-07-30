@@ -1,7 +1,9 @@
-package segment;
+package string.segment;
 
 import org.junit.Before;
 import org.junit.Test;
+import string.segment.CombinedSegment;
+import string.segment.Token;
 
 import java.util.Set;
 

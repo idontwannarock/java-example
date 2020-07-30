@@ -1,7 +1,8 @@
-package regex;
+package string.regex;
 
 import org.junit.Before;
 import org.junit.Test;
+import string.regex.RegexPrinter;
 
 import java.util.List;
 

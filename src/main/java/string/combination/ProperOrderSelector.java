@@ -1,4 +1,4 @@
-package combination;
+package string.combination;
 
 import org.apache.commons.lang3.NotImplementedException;
 

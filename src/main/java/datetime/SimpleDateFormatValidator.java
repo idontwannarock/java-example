@@ -11,7 +11,7 @@ import java.util.Date;
  */
 public class SimpleDateFormatValidator implements DateValidator {
 
-    private String dateFormat;
+    private final String dateFormat;
 
     public SimpleDateFormatValidator(String dateFormat) {
         this.dateFormat = dateFormat;
