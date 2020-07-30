@@ -36,4 +36,4 @@ log4j.category.com.monitorjbl=DEBUG
 
 1. why ide does not recognize source and test classpath
 
-a: mark src/main as sources root, test/main as test sources root
+a: mark src/main/java as sources root, src/test/java as test sources root
