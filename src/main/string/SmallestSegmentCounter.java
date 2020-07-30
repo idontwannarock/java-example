@@ -4,6 +4,7 @@ import static java.lang.Character.isDigit;
 
 public class SmallestSegmentCounter {
 
+    // 計算 question 最小單位片段總數，連續英文、連續數字、單一中文字都各自算一個最小單位片段
     // does not count spaces
     public int countSmallestSegments(String question) {
         int count = 0;
