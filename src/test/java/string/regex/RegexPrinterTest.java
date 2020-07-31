@@ -77,4 +77,20 @@ public class RegexPrinterTest {
         assertNotNull(matches);
         assertEquals(0, matches.size());
     }
+
+    @Test
+    public void testToFindMatchInPartOfSentence() {
+        // arrange
+        String input = "Seine (Paris)的Mountain Bikes和Caps的Revenue标准差的前十名趋势";
+        String patternString = "(?:" +
+                "趋势|(?:随?时间)?变化" +
+                ")";
+        // act
+        List<String> matches = printer.printAllMatches(input, patternString, CASE_INSENSITIVE);
+        System.out.println(matches);
+
+        // assert
+        assertNotNull(matches);
+        assertEquals(0, matches.size());
+    }
 }
