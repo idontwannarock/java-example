@@ -182,3 +182,6 @@ lib
 
 # Resources folder
 resources
+
+# Build folder
+target
