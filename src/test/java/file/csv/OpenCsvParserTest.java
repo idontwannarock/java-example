@@ -3,7 +3,7 @@ package file.csv;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import file.csv.CsvParser;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -11,18 +11,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
-public class CsvParserTest {
+@Slf4j
+public class OpenCsvParserTest {
 
-    private CsvParser csvParser;
+    private OpenCsvParser parser;
 
     private final Gson gson = new GsonBuilder().serializeNulls().create();
     private final TypeToken<List<List<String>>> typeToken = new TypeToken<>() {};
 
     @Before
     public void init() {
-        this.csvParser = new CsvParser();
+        this.parser = new OpenCsvParser();
     }
 
     @Test
@@ -48,7 +50,7 @@ public class CsvParserTest {
         System.out.println();
 
         // action
-        List<List<String>> parsedRow = csvParser.parse("test/resources/csv/test_null_date.csv", 1, 3);
+        List<List<String>> parsedRow = parser.parse("test/resources/csv/test_null_date.csv", 1, 3);
         String actualJson = gson.toJson(parsedRow);
         System.out.println("Actual json: " + actualJson);
         List<List<String>> actual = gson.fromJson(actualJson, typeToken.getType());
@@ -61,5 +63,20 @@ public class CsvParserTest {
         assertThat(parsedRow, is(rows));
         assertThat(actualJson, is(expectedJson));
         assertThat(actual, is(expected));
+    }
+
+    @Test
+    public void test_file_read_rows() {
+        // arrange
+        String filePath = "/Users/wangchenghao/Downloads/solar_demo_station_ten_m.csv";
+        int skipLines = 1;
+        int cellTotal = 28;
+        long expected = 10_001_728L;
+        // act
+        long start = System.currentTimeMillis();
+        long actual = parser.countParsedRows(filePath, skipLines, cellTotal);
+        log.info("OpenCsv parse {} with no format costs {} milliseconds", filePath, System.currentTimeMillis() - start);
+        // assert
+        assertEquals(expected, actual);
     }
 }
