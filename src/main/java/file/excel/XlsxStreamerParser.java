@@ -48,7 +48,7 @@ public class XlsxStreamerParser {
     private String extractCellValue(Cell cell, DataFormatter dataFormatter) {
         String value = dataFormatter.formatCellValue(cell);
         if (cell != null) {
-            CellType cellType = cell.getCellTypeEnum();
+            CellType cellType = cell.getCellType();
             switch (cellType) {
                 case BOOLEAN:
                 case STRING:

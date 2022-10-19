@@ -51,11 +51,11 @@ public class XlsParser {
         String value;
         if (cell == null) {
             value = null;
-        } else if (cell.getCellTypeEnum() == CellType.BOOLEAN) {
+        } else if (cell.getCellType() == CellType.BOOLEAN) {
             value = String.valueOf(cell.getBooleanCellValue());
-        } else if (cell.getCellTypeEnum() == CellType.STRING) {
+        } else if (cell.getCellType() == CellType.STRING) {
             value = cell.getStringCellValue();
-        } else if (cell.getCellTypeEnum() == CellType.NUMERIC) {
+        } else if (cell.getCellType() == CellType.NUMERIC) {
             if (DateUtil.isCellDateFormatted(cell)) {
                 Date date = cell.getDateCellValue();
                 Instant instant = date.toInstant();
@@ -64,9 +64,9 @@ public class XlsParser {
             } else {
                 value = dataFormatter.formatCellValue(cell);
             }
-        } else if (cell.getCellTypeEnum() == CellType.FORMULA) {
+        } else if (cell.getCellType() == CellType.FORMULA) {
             CellValue cellValue = evaluator.evaluate(cell);
-            switch (cellValue.getCellTypeEnum()) {
+            switch (cellValue.getCellType()) {
                 case BOOLEAN:
                     value = String.valueOf(cellValue.getBooleanValue());
                     break;
@@ -84,9 +84,9 @@ public class XlsParser {
                 default:
                     value = null;
             }
-        } else if (cell.getCellTypeEnum() == CellType.ERROR) {
+        } else if (cell.getCellType() == CellType.ERROR) {
             value = String.valueOf(cell.getErrorCellValue());
-        } else if (cell.getCellTypeEnum() == CellType.BLANK) {
+        } else if (cell.getCellType() == CellType.BLANK) {
             value = null;
         } else {
             value = dataFormatter.formatCellValue(cell);

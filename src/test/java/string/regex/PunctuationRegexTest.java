@@ -1,7 +1,6 @@
 package string.regex;
 
 import org.junit.Test;
-import string.regex.PunctuationRegex;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

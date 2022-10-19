@@ -3,6 +3,7 @@ package file.csv;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
 import com.opencsv.RFC4180Parser;
+import com.opencsv.exceptions.CsvValidationException;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.BufferedReader;
@@ -34,7 +35,7 @@ public class OpenCsvRFC4180Parser {
                     rows.add(row);
                 }
             }
-        } catch (IOException e) {
+        } catch (IOException | CsvValidationException e) {
             e.printStackTrace();
         }
 

@@ -1,6 +1,5 @@
 package file.csv;
 
-import file.csv.LargeCsvGenerator;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -8,7 +7,7 @@ import java.io.File;
 import java.io.IOException;
 
 import static org.hamcrest.Matchers.greaterThan;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 public class LargeCsvGeneratorTest {
