@@ -19,6 +19,7 @@
         <lombok.version>1.18.24</lombok.version>
         <opencsv.version>5.7.0</opencsv.version>
         <commons.collections.version>4.4</commons.collections.version>
+        <commons-text.version>1.10.0</commons-text.version>
         <commons.net.version>3.8.0</commons.net.version>
         <commons.lang3.version>3.12.0</commons.lang3.version>
         <poi.version>5.2.2</poi.version>
@@ -75,12 +76,21 @@
                     <groupId>commons-collections</groupId>
                     <artifactId>commons-collections</artifactId>
                 </exclusion>
+                <exclusion>
+                    <groupId>org.apache.commons</groupId>
+                    <artifactId>commons-text</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-collections4</artifactId>
             <version>${commons.collections.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-text</artifactId>
+            <version>${commons-text.version}</version>
         </dependency>
 
         <!-- Apache Commons Net -->
