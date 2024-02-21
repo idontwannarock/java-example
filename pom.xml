@@ -30,7 +30,7 @@
         <slf4j.version>2.0.3</slf4j.version>
         <xmlbeans.version>5.0.3</xmlbeans.version>
         <mssql.jdbc.version>11.2.1.jre11</mssql.jdbc.version>
-        <postgresql.version>42.5.0</postgresql.version>
+        <postgresql.version>42.7.2</postgresql.version>
         <jmnemohistosyne.version>0.2.3</jmnemohistosyne.version>
 
         <assertj.version>3.23.1</assertj.version>
